@@ -1,36 +1,126 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MEEK — Talent Marketplace for the Overlooked
 
-## Getting Started
+A hiring marketplace that connects returning citizens with employers who look past the filter.
 
-First, run the development server:
+---
+
+## Quick Start
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Set up environment
+
+```bash
+cp .env.example .env
+```
+
+The defaults work for local development. No changes needed.
+
+### 3. Set up the database and seed mock data
+
+```bash
+npm run setup
+```
+
+Runs the migration and seeds 8 candidate profiles + 3 employer profiles.
+
+### 4. Start the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Demo Accounts
 
-## Learn More
+All seeded accounts use the password: **password123**
 
-To learn more about Next.js, take a look at the following resources:
+**Talent (candidates):**
+| Email | Name |
+|---|---|
+| marcus.johnson@example.com | Marcus Johnson |
+| layla.washington@example.com | Layla Washington |
+| deon.carter@example.com | Deon Carter |
+| tamara.brooks@example.com | Tamara Brooks |
+| rafael.moreno@example.com | Rafael Moreno |
+| keisha.turner@example.com | Keisha Turner |
+| james.okafor@example.com | James Okafor |
+| nina.hayes@example.com | Nina Hayes |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Employers:**
+| Email | Company |
+|---|---|
+| hiring@bridgebuild.example.com | BridgeBuild Construction |
+| jobs@veridian.example.com | Veridian Logistics |
+| careers@heartlandhealth.example.com | Heartland Health Clinics |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Key Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Route | Description |
+|---|---|
+| `/` | Landing page |
+| `/signup` | Sign up as talent or employer |
+| `/login` | Sign in |
+| `/employer/dashboard` | Browse and filter candidates |
+| `/candidates/[id]` | Full candidate profile |
+| `/talent/profile` | Create/edit your profile (talent only) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Tech Stack
+
+| Layer | Choice |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| Database | SQLite via LibSQL |
+| ORM | Prisma 7 |
+| Auth | Custom JWT (jose) + HTTP-only cookies |
+
+---
+
+## What's Real vs Mocked
+
+### Real (fully functional)
+- Auth: signup, login, logout, role-based sessions via JWT cookies
+- Talent profile creation and editing (bio, skills, work history, certifications)
+- Candidate listing with live filters: skill, location, verified badge, ready-to-work
+- Individual full candidate profiles
+- Employer interest/contact requests stored in the database
+- Role-based routing after login
+
+### Simplified for MVP
+- **No email notifications** — interest requests are stored but nothing is sent
+- **No file uploads** — photo field exists in DB but no upload UI
+- **No employer profile creation flow** — employers go straight to dashboard after signup
+- **No messaging threads** — interest is one-way; no reply system
+- **No admin verification flow** — verified badge is set via seed data; real flow needs a review step
+
+### Next steps to productionize
+- Email (Resend/Postmark) for interest notifications
+- Profile photo upload (Cloudflare R2 or S3)
+- Employer profile creation page
+- Full messaging/reply UI
+- Admin dashboard for program verification
+- Zod validation on all API inputs
+- Rate limiting
+
+---
+
+## Database Scripts
+
+```bash
+npm run db:migrate   # Run pending migrations
+npm run db:seed      # Seed mock data
+npm run db:reset     # Reset and re-seed (destroys all data)
+```

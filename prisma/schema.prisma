@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id              String           @id @default(cuid())
+  email           String           @unique
+  password        String
+  role            String           // "talent" | "employer"
+  createdAt       DateTime         @default(now())
+  talentProfile   TalentProfile?
+  employerProfile EmployerProfile?
+  sentInterests   InterestRequest[] @relation("SenderInterests")
+}
+
+model TalentProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  name            String
+  location        String
+  bio             String
+  skills          String   // JSON array as string
+  workHistory     String   // JSON array as string
+  certifications  String   // JSON array as string
+  verified        Boolean  @default(false)
+  verifiedProgram String?
+  readyToWork     Boolean  @default(true)
+  availableDate   String?
+  photo           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  interests       InterestRequest[]
+}
+
+model EmployerProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  companyName String
+  industry    String
+  location    String
+  description String
+  website     String?
+  logo        String?
+  createdAt   DateTime @default(now())
+}
+
+model InterestRequest {
+  id        String        @id @default(cuid())
+  talentId  String
+  talent    TalentProfile @relation(fields: [talentId], references: [id])
+  senderId  String
+  sender    User          @relation("SenderInterests", fields: [senderId], references: [id])
+  message   String?
+  status    String        @default("pending")
+  createdAt DateTime      @default(now())
+}
