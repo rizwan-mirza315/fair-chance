@@ -1,22 +1,17 @@
-import { db } from '@/lib/db'
+import { candidates } from '@/lib/mock-data'
 import { notFound } from 'next/navigation'
 import { ContactButton } from '@/components/employer/ContactButton'
 import Link from 'next/link'
-
-type WorkEntry = { title: string; company: string; period: string; description: string }
-type CertEntry = { name: string; issuer: string; year: string }
 
 export default async function CandidateProfilePage(
   props: { params: Promise<{ id: string }> }
 ) {
   const { id } = await props.params
 
-  const profile = await db.talentProfile.findUnique({ where: { id } })
+  const profile = candidates.find((c) => c.id === id)
   if (!profile) notFound()
 
-  const skills: string[] = JSON.parse(profile.skills)
-  const workHistory: WorkEntry[] = JSON.parse(profile.workHistory)
-  const certifications: CertEntry[] = JSON.parse(profile.certifications)
+  const { skills, workHistory, certifications } = profile
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">

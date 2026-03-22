@@ -13,9 +13,9 @@ export function Nav() {
 
   return (
     <nav className="border-b border-gray-100 bg-white sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/fair-chance.png" alt="Fair Chance" width={120} height={36} className="h-9 w-auto" priority />
+          <Image src="/fair-chance.png" alt="Fair Chance" width={200} height={60} className="h-14 w-auto" priority />
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
