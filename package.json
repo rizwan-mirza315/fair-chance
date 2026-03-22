@@ -10,7 +10,8 @@
     "db:migrate": "prisma migrate dev --name init",
     "db:seed": "npx tsx prisma/seed.ts",
     "db:reset": "prisma migrate reset --force && npx tsx prisma/seed.ts",
-    "setup": "prisma migrate dev --name init && npx tsx prisma/seed.ts"
+    "setup": "prisma migrate dev --name init && npx tsx prisma/seed.ts",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@libsql/client": "^0.17.2",
